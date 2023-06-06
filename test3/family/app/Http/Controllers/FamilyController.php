@@ -10,43 +10,30 @@ use App\Models\Place;
 
 class FamilyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
+   
     public function index()
     {
-        //
+       $families=Family::all();
+        return view('showall',$families);
     }
+    
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+  
     public function create()
     {
-        //
+     
+       $places=Place::all();
+       return view('add_family',compact('places'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+  
     public function store(Request $request)
     {
-        //
+        $family=Family::create($request->all());
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+  
     public function show($id)
     {
         //
@@ -86,14 +73,14 @@ class FamilyController extends Controller
         //
     }
       
-    // public function addFamilyToPlace($fid,$pid)
-    // {
+    public function addFamilyToPlace($fid,$pid)
+    {
         
-    //     $family=Family::findOrFail($fid);
-    //     // $family->update('place_id',$pid);
-    //     $place=Place::findOrFail($pid);
-    //     // $family->place()=$place;
-    //     dd($family->place());
-    // }
+        $family=Family::findOrFail($fid);
+        $place=Place::findOrFail($pid);
+         $family->place()->save($place);
+         $family->refresh();
+    }
+   
 }
 
